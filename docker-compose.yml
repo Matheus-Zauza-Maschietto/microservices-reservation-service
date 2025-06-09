@@ -1,0 +1,23 @@
+services:
+  reservation_service:
+    build: .
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__DefaultConnection="Host=database;Database=db_reservation_service;Username=reservation_service;Password=ReservServPass@123;"
+    ports:
+      - "5081:5081"
+
+  database:
+    image: postgres:16.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=ReservServPass@123
+      - POSTGRES_USER=reservation_service
+      - POSTGRES_DB=db_reservation_service
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d db_reservation_service -U reservation_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
