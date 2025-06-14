@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IApiBooksService, ApiBooksService>();
 builder.Services.AddScoped<IReservationsRepository, ReservationsRepository>();
+builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddHttpClient<ApiBooksService>()
@@ -30,6 +31,8 @@ builder.Services
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+app.MapSwagger();
+
 
 app.MigrateDatabase<ApplicationDbContext>();
 

@@ -9,14 +9,14 @@ public class ApiBooksService : IApiBooksService
 {
     private readonly HttpClient _httpClient;
 
-    public ApiBooksService(HttpClient httpClient)
+    public ApiBooksService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(nameof(ApiBooksService));
     }
 
     public async Task<BookDto> FindBookById(int bookId)
     {
-        var response = await _httpClient.GetAsync($"/books/{bookId}");
+        var response = await _httpClient.GetAsync($"/Book/{bookId}");
         var responseBody = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
@@ -38,7 +38,7 @@ public class ApiBooksService : IApiBooksService
 
         var requestBody = JsonSerializer.Serialize(new UpdateBookStatusDto((int)typeStatus));
         var response = await _httpClient.PatchAsync(
-            $"/books/{bookId}/status",
+            $"/BookInstance/{bookId}/Status",
             new StringContent(requestBody, Encoding.UTF8, "application/json")
         );
 
