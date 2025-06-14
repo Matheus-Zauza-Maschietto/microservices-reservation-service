@@ -16,7 +16,7 @@ public class ApiBooksService : IApiBooksService
 
     public async Task<BookDto> FindBookById(int bookId)
     {
-        var response = await _httpClient.GetAsync($"/Book/{bookId}");
+        var response = await _httpClient.GetAsync($"/BookInstance/{bookId}");
         var responseBody = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
